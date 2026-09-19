@@ -1,0 +1,5 @@
+XKBMODEL="pc105"
+XKBLAYOUT="pt"
+XKBVARIANT=""
+XKBOPTIONS="lv3:lalt_switch"
+BACKSPACE="guess"
