@@ -1,0 +1,13 @@
+    <!-- teclado-espaco: chamado quando o teclado virtual abre.
+         Leva a janela em foco ate o topo da area livre e, se ela nao couber
+         acima do teclado, diminui ate caber. Janela maximizada ja encolhe
+         sozinha e fica como esta. -->
+    <keybind key="W-C-A-S-F11">
+      <action name="If">
+        <query maximized="none" />
+        <then>
+          <action name="MoveToEdge" direction="up" snapWindows="no" />
+          <action name="FitToOutput" />
+        </then>
+      </action>
+    </keybind>

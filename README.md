@@ -12,6 +12,7 @@ Configuração do layout de teclado português (pc105, AltGr via
 | `wayvnc.config` | `/etc/rpi-connect/wayvnc.config` | wayvnc / Raspberry Pi Connect |
 | `squeekboard/br*.yaml` | `/usr/share/misc/squeekboard/keyboards/` (via `dpkg-divert`) | teclado virtual (squeekboard) |
 | `squeekboard/terminal/br*.yaml` | `/usr/share/misc/squeekboard/keyboards/terminal/` | teclado virtual (squeekboard) em terminais |
+| `espaco/teclado-espaco.service` | `~/.config/systemd/user/` | sobe a janela quando o teclado virtual abre |
 | `squeekboard/url/br*.yaml`, `squeekboard/email/br*.yaml` | `/usr/share/misc/squeekboard/keyboards/{url,email}/` | teclado virtual na barra de endereço e em campos de e-mail |
 
 ### Teclado virtual (squeekboard)
@@ -39,6 +40,27 @@ for f in br.yaml br_wide.yaml; do sudo rm "$D/$f"; sudo dpkg-divert --local --re
 
 Tudo passa a valer no próximo login (ou reiniciando o squeekboard).
 
+### Janela sobe quando o teclado abre
+
+O squeekboard reserva o espaço dele na tela e o painel sobe, mas o labwc só
+ajusta janelas maximizadas; as outras ficam embaixo do teclado. O serviço de
+usuário `teclado-espaco` (`espaco/teclado-espaco.py`) observa o teclado pelo
+D-Bus (`sm.puri.OSK0`, propriedade `Visible`) e, quando ele abre, leva a janela
+em foco até o topo da tela e, se ela não couber acima do teclado, diminui a
+altura até caber. Janelas maximizadas ficam como estão (já encolhem sozinhas).
+Quando o teclado fecha, a janela fica onde está.
+
+O labwc não tem IPC, então a ação fica num atalho
+(`Super+Ctrl+Alt+Shift+F11`, em `espaco/rc-keybinds.xml`) que o script
+dispara com `wtype`. O `espaco/aplicar-rc.py` coloca esse atalho no
+`~/.config/labwc/rc.xml` entre os comentários `teclado-espaco-inicio` e
+`teclado-espaco-fim` (o labwc do Pi roda com `--merge-config`, então os
+atalhos do sistema continuam valendo). Para desligar:
+
+```bash
+systemctl --user disable --now teclado-espaco
+```
+
 ## Instalação
 
 ```bash
@@ -54,7 +76,9 @@ O script `install.sh`:
 3. Roda `sudo localectl set-x11-keymap pt pc105 "" lv3:lalt_switch`.
 4. Instala os layouts PT-BR do teclado virtual (squeekboard): o normal, com a
    fileira Esc/Tab/Ctrl/Alt/Shift, e o de terminal.
-5. Reinicia o serviço `rpi-connect-wayvnc.service` (usuário), se estiver ativo.
+5. Liga o serviço `teclado-espaco` e coloca o atalho dele no
+   `~/.config/labwc/rc.xml` (janela sobe quando o teclado virtual abre).
+6. Reinicia o serviço `rpi-connect-wayvnc.service` (usuário), se estiver ativo.
    Se isso falhar por permissão, o script só mostra um aviso: a configuração já
    foi gravada e passa a valer na próxima conexão.
 

@@ -37,6 +37,15 @@ if [ -d "$SQUEEK_DIR" ]; then
     done
 fi
 
+# Teclado virtual abre -> janela em foco sobe ate o topo e diminui se nao couber
+python3 espaco/aplicar-rc.py
+labwc --reconfigure 2>/dev/null || true
+mkdir -p "$HOME/.config/systemd/user"
+cp espaco/teclado-espaco.service "$HOME/.config/systemd/user/"
+systemctl --user daemon-reload
+systemctl --user enable --now teclado-espaco.service \
+    || echo "Aviso: nao foi possivel iniciar o teclado-espaco agora; ele sobe no proximo login."
+
 sudo localectl set-x11-keymap pt pc105 "" lv3:lalt_switch
 
 # Reaplica o layout no wayvnc (Raspberry Pi Connect), se estiver ativo
