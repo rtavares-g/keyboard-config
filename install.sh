@@ -23,7 +23,7 @@ sudo cp wayvnc.config /etc/rpi-connect/wayvnc.config
 sudo cp keyboard /etc/default/keyboard
 
 # Teclado virtual (squeekboard): layout BR com fileira Esc/Tab/Ctrl/Alt/Shift
-# e layout BR para terminais (o pacote so traz terminal em us/de/es/fr).
+# e layouts BR para terminal, barra de endereco e e-mail.
 # Os br*.yaml do pacote sao desviados com dpkg-divert para sobreviver a updates.
 SQUEEK_DIR=/usr/share/misc/squeekboard/keyboards
 if [ -d "$SQUEEK_DIR" ]; then
@@ -31,7 +31,10 @@ if [ -d "$SQUEEK_DIR" ]; then
         sudo dpkg-divert --quiet --local --rename --divert "$SQUEEK_DIR/$f.distrib" --add "$SQUEEK_DIR/$f"
         sudo install -m 644 "squeekboard/$f" "$SQUEEK_DIR/$f"
     done
-    sudo install -m 644 squeekboard/terminal/br.yaml squeekboard/terminal/br_wide.yaml "$SQUEEK_DIR/terminal/"
+    # Layouts especiais (terminal, barra de endereco, e-mail) so vem em us
+    for d in terminal url email; do
+        sudo install -m 644 "squeekboard/$d/br.yaml" "squeekboard/$d/br_wide.yaml" "$SQUEEK_DIR/$d/"
+    done
 fi
 
 sudo localectl set-x11-keymap pt pc105 "" lv3:lalt_switch

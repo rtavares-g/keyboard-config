@@ -12,6 +12,7 @@ Configuração do layout de teclado português (pc105, AltGr via
 | `wayvnc.config` | `/etc/rpi-connect/wayvnc.config` | wayvnc / Raspberry Pi Connect |
 | `squeekboard/br*.yaml` | `/usr/share/misc/squeekboard/keyboards/` (via `dpkg-divert`) | teclado virtual (squeekboard) |
 | `squeekboard/terminal/br*.yaml` | `/usr/share/misc/squeekboard/keyboards/terminal/` | teclado virtual (squeekboard) em terminais |
+| `squeekboard/url/br*.yaml`, `squeekboard/email/br*.yaml` | `/usr/share/misc/squeekboard/keyboards/{url,email}/` | teclado virtual na barra de endereço e em campos de e-mail |
 
 ### Teclado virtual (squeekboard)
 
@@ -20,6 +21,11 @@ em terminais usa um layout especial (com Ctrl, Tab e setas) que o pacote só tra
 em `us`, `de`, `es` e `fr`. Sem um layout de terminal `br`, ele cai para inglês.
 Os arquivos em `squeekboard/terminal/` são o layout de terminal americano com a
 linha `a s d f g h j k l ç` e uma tela de acentos (`Ãã`).
+
+Na barra de endereço do navegador e em campos de e-mail acontece o mesmo: o
+pacote só traz esses layouts em `us`. Os arquivos em `squeekboard/url/` e
+`squeekboard/email/` são os americanos com o `ç` no fim da linha do meio.
+(Número, PIN e emoji não têm letras, então ficam como estão.)
 
 Os arquivos em `squeekboard/br*.yaml` são o layout BR do pacote com uma fileira
 extra no topo: `Esc Tab Ctrl Alt Shift ↑ ↓ ← →`. Os originais são desviados com
