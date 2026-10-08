@@ -6,7 +6,7 @@
 set -e
 
 REPO_URL="https://github.com/rtavares-g/keyboard-config.git"
-INSTALL_DIR="$HOME/keyboard-config"
+INSTALL_DIR="$HOME/projetos/keyboard-config"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 if [ "$SCRIPT_DIR" != "$INSTALL_DIR" ]; then
@@ -26,7 +26,10 @@ sudo localectl set-x11-keymap pt pc105 "" lv3:lalt_switch
 
 # Reaplica o layout no wayvnc (Raspberry Pi Connect), se estiver ativo
 if systemctl --user is-active --quiet rpi-connect-wayvnc.service 2>/dev/null; then
-    systemctl --user restart rpi-connect-wayvnc.service
+    # Pode falhar por permissao (ex.: rodando dentro da propria sessao VNC);
+    # a configuracao ja foi gravada e vale na proxima conexao.
+    systemctl --user restart rpi-connect-wayvnc.service 2>/dev/null \
+        || echo "Aviso: nao foi possivel reiniciar o wayvnc agora; o layout vale na proxima conexao do Pi Connect."
 fi
 
 echo "Layout de teclado PT (AltGr = lv3:lalt_switch) aplicado."

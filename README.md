@@ -14,8 +14,8 @@ Configuração do layout de teclado português (pc105, AltGr via
 ## Instalação
 
 ```bash
-git clone https://github.com/rtavares-g/keyboard-config.git ~/keyboard-config
-cd ~/keyboard-config
+git clone https://github.com/rtavares-g/keyboard-config.git ~/projetos/keyboard-config
+cd ~/projetos/keyboard-config
 ./install.sh
 ```
 
@@ -25,6 +25,8 @@ O script `install.sh`:
 2. Copia `keyboard` para `/etc/default/keyboard`.
 3. Roda `sudo localectl set-x11-keymap pt pc105 "" lv3:lalt_switch`.
 4. Reinicia o serviço `rpi-connect-wayvnc.service` (usuário), se estiver ativo.
+   Se isso falhar por permissão, o script só mostra um aviso: a configuração já
+   foi gravada e passa a valer na próxima conexão.
 
 ## Instalação manual (passo a passo)
 
@@ -55,7 +57,7 @@ sudo localectl set-x11-keymap pt pc105 "" lv3:lalt_switch
 ## Reinstalar (ex: cartão SD novo)
 
 ```bash
-git clone https://github.com/rtavares-g/keyboard-config.git ~/keyboard-config
-cd ~/keyboard-config
+git clone https://github.com/rtavares-g/keyboard-config.git ~/projetos/keyboard-config
+cd ~/projetos/keyboard-config
 ./install.sh
 ```
