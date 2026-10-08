@@ -10,6 +10,16 @@ Configuração do layout de teclado português (pc105, AltGr via
 |---|---|---|
 | `keyboard` | `/etc/default/keyboard` | console/X11 (console-setup) |
 | `wayvnc.config` | `/etc/rpi-connect/wayvnc.config` | wayvnc / Raspberry Pi Connect |
+| `squeekboard/terminal/br*.yaml` | `/usr/share/misc/squeekboard/keyboards/terminal/` | teclado virtual (squeekboard) em terminais |
+
+### Teclado virtual (squeekboard)
+
+O teclado virtual segue o layout da sessão (`br`) em campos de texto comuns, mas
+em terminais usa um layout especial (com Ctrl, Tab e setas) que o pacote só traz
+em `us`, `de`, `es` e `fr`. Sem um layout de terminal `br`, ele cai para inglês.
+Os arquivos em `squeekboard/terminal/` são o layout de terminal americano com a
+linha `a s d f g h j k l ç` e uma tela de acentos (`Ãã`). Passam a valer no
+próximo login (ou reiniciando o squeekboard).
 
 ## Instalação
 
@@ -24,7 +34,8 @@ O script `install.sh`:
 1. Copia `wayvnc.config` para `/etc/rpi-connect/wayvnc.config`.
 2. Copia `keyboard` para `/etc/default/keyboard`.
 3. Roda `sudo localectl set-x11-keymap pt pc105 "" lv3:lalt_switch`.
-4. Reinicia o serviço `rpi-connect-wayvnc.service` (usuário), se estiver ativo.
+4. Instala o layout de terminal PT-BR do teclado virtual (squeekboard).
+5. Reinicia o serviço `rpi-connect-wayvnc.service` (usuário), se estiver ativo.
    Se isso falhar por permissão, o script só mostra um aviso: a configuração já
    foi gravada e passa a valer na próxima conexão.
 

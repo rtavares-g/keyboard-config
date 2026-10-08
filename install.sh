@@ -22,6 +22,13 @@ sudo mkdir -p /etc/rpi-connect
 sudo cp wayvnc.config /etc/rpi-connect/wayvnc.config
 sudo cp keyboard /etc/default/keyboard
 
+# Layout PT-BR do teclado virtual (squeekboard) para terminais; o pacote so
+# traz versoes de terminal em us/de/es/fr e cai para us nos demais
+SQUEEK_DIR=/usr/share/misc/squeekboard/keyboards/terminal
+if [ -d "$SQUEEK_DIR" ]; then
+    sudo install -m 644 squeekboard/terminal/br.yaml squeekboard/terminal/br_wide.yaml "$SQUEEK_DIR/"
+fi
+
 sudo localectl set-x11-keymap pt pc105 "" lv3:lalt_switch
 
 # Reaplica o layout no wayvnc (Raspberry Pi Connect), se estiver ativo
@@ -33,3 +40,4 @@ if systemctl --user is-active --quiet rpi-connect-wayvnc.service 2>/dev/null; th
 fi
 
 echo "Layout de teclado PT (AltGr = lv3:lalt_switch) aplicado."
+echo "Teclado virtual: o layout de terminal BR vale a partir do proximo login."
